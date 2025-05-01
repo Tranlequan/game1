@@ -7,7 +7,7 @@ Wall::Wall(int startX, int startY, SDL_Texture* text){
         rect = {x, y, TILE_SIZE , TILE_SIZE}; //tạo vùng vẽ cho SDL
         texture = text; //lưu con trỏ texture để vẽ
 }
-void Wall::render(SDL_Renderer* renderer) {
+void Wall::render(SDL_Renderer* renderer) const {
         if (active && texture) {
             SDL_RenderCopy(renderer, texture, NULL, &rect);// vẽ ảnh từ con trỏ renderer vào vị trí rect
         }

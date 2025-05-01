@@ -15,7 +15,7 @@ class Wall
 
     //hàm khởi tạo wall
     Wall(int startX, int startY, SDL_Texture* text);
-    void render(SDL_Renderer* renderer);
+    void render(SDL_Renderer* renderer) const;
 };
 
 #endif // WALL_H
