@@ -4,7 +4,7 @@ Bullet::Bullet (int startX, int startY, int dirX, int dirY) {
 x = startX;
 y = startY;
 dx = dirX;
-dy - dirY;
+dy = dirY;
 active = true;
 rect = {x, y, 10, 10};
 }
