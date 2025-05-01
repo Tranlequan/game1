@@ -7,6 +7,13 @@
 #include "PlayerTank.h"
 
 using namespace std;
+SDL_Texture* loadTexture(const string& path, SDL_Renderer* renderer) {
+    SDL_Texture* newTexture = IMG_LoadTexture(renderer, path.c_str());
+    if (!newTexture) {
+        cerr << "Failed to load image " << path << "! SDL_image Error: " << IMG_GetError() << endl;
+    }
+    return newTexture;
+}
 
 
 class Game {
@@ -16,6 +23,7 @@ public:
     SDL_Renderer* renderer;
     vector<Wall> walls;
     PlayerTank player;
+    SDL_Texture* wallTexture;
 
     Game()
     : player(((MAP_WIDTH - 1) / 2) * TILE_SIZE, (MAP_HEIGHT - 2) * TILE_SIZE)
@@ -41,25 +49,27 @@ public:
             running = false;
             return;
         }
+         wallTexture = loadTexture("wall.png", renderer);
         generateWalls();
     }
     ~Game() {
         SDL_DestroyRenderer(renderer);
+        SDL_DestroyTexture(wallTexture);
         SDL_DestroyWindow(window);
         SDL_Quit();
     }
-
+ void generateWalls() {
+        for (int i = 1; i < MAP_HEIGHT - 2; i+=3) {
+            for (int j = 1; j < MAP_WIDTH - 2; j+=3) {
+                walls.emplace_back(j * TILE_SIZE, i * TILE_SIZE, wallTexture);
+            }
+        }
+    }
     void render() {
         SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        for (int i = 1; i < MAP_HEIGHT - 1; ++i) {
-            for (int j = 1; j < MAP_WIDTH - 1; ++j) {
-                SDL_Rect tile = { j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE };
-                SDL_RenderFillRect(renderer, &tile);
-            }
-        }
         for(int i = 0; i < walls.size();i++){
                 walls[i].render(renderer);
         }
@@ -74,14 +84,7 @@ public:
             SDL_Delay(16);
         }
     }
-    void generateWalls() {
-    for(int i = 3; i < MAP_HEIGHT - 3; i+=2){
-        for(int j = 3; j < MAP_WIDTH - 3; j+=2){
-            Wall w = Wall(j *TILE_SIZE, i * TILE_SIZE);
-            walls.push_back(w);
-        }
-    }
-    }
+
     void handleEvents() {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {

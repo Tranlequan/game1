@@ -1,14 +1,14 @@
-#include "Wall.h"
+#include "wall.h"
 
-Wall::Wall(int startX, int startY){
-    x= startX;
-    y = startY;
-    active = true;
-    rect = {x,y,TILE_SIZE,TILE_SIZE};
-    }
-void Wall::render(SDL_Renderer* renderer){
-    if(active){
-        SDL_SetRenderDrawColor(renderer, 150, 75, 0, 255);
-        SDL_RenderFillRect(renderer, &rect);
-    }
+Wall::Wall(int startX, int startY, SDL_Texture* text){
+    x = startX;
+        y = startY;
+        active = true;
+        rect = {x, y, TILE_SIZE , TILE_SIZE}; //tạo vùng vẽ cho SDL
+        texture = text; //lưu con trỏ texture để vẽ
+}
+void Wall::render(SDL_Renderer* renderer) {
+        if (active && texture) {
+            SDL_RenderCopy(renderer, texture, NULL, &rect);// vẽ ảnh từ con trỏ renderer vào vị trí rect
+        }
     }
