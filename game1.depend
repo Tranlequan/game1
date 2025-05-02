@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1746214444 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\main.cpp
+1746219207 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -19,7 +19,7 @@
 
 1746121741 c:\users\tranl\onedrive\desktop\gameofquan\game1\const.h
 
-1746127955 c:\users\tranl\onedrive\desktop\gameofquan\game1\playertank.h
+1746218426 c:\users\tranl\onedrive\desktop\gameofquan\game1\playertank.h
 	<SDL.h>
 	<vector>
 	<algorithm>
@@ -27,24 +27,21 @@
 	"const.h"
 	"Bullet.h"
 
-1746127401 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\playertank.cpp
+1746218175 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\playertank.cpp
 	"PlayerTank.h"
 	<algorithm>
 
-1746127860 c:\users\tranl\onedrive\desktop\gameofquan\game1\bullet.h
+1746217872 c:\users\tranl\onedrive\desktop\gameofquan\game1\bullet.h
 	<SDL.h>
-	<vector>
-	<algorithm>
 	"Wall.h"
 	"const.h"
 
-1746129621 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\bullet.cpp
+1746217997 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\bullet.cpp
 	"Bullet.h"
 
-1746214882 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\enemytank.cpp
-	"EnemyTank.h"
-	<SDL.h>
-	<iostream>
+1746218733 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\enemytank.cpp
+	"enemytank.h"
+	<algorithm>
 
 1746215434 c:\users\tranl\onedrive\desktop\gameofquan\game1\enemytank.h
 	<SDL.h>

@@ -28,6 +28,8 @@ public:
     PlayerTank* player;
     SDL_Texture* wallTexture;
     SDL_Texture* playerTexture;
+    SDL_Texture* bulletTexture;
+    SDL_Texture* enemyTexture;
     int enemyNumber = 5;
 
     Game() {
@@ -56,13 +58,16 @@ public:
 
         wallTexture = loadTexture("wall.png", renderer);
         playerTexture = loadTexture("Player.png", renderer);
+        bulletTexture = loadTexture("bullet.png", renderer);
+        enemyTexture = loadTexture("enemy.png", renderer);
+
 
         if (!wallTexture || !playerTexture) {
             running = false;
             return;
         }
 
-        player = new PlayerTank(((MAP_WIDTH - 1) / 2) * TILE_SIZE, (MAP_HEIGHT - 2) * TILE_SIZE, playerTexture);
+        player = new PlayerTank(((MAP_WIDTH - 1) / 2) * TILE_SIZE, (MAP_HEIGHT - 2) * TILE_SIZE,renderer, playerTexture, bulletTexture);
         generateWalls();
     }
 
@@ -94,7 +99,7 @@ public:
         player->render(renderer);
 
         // Render các enemy
-        for (const auto& enemy : enemies) {
+        for (auto& enemy : enemies) {
             enemy.render(renderer);
         }
 
@@ -102,7 +107,7 @@ public:
     }
 
     void spawnRandomEnemy() {
-       enemies.clear();
+        enemies.clear();
         for (int i = 0; i < enemyNumber; ++i) {
             int ex, ey;
             bool valid = false;
@@ -130,7 +135,7 @@ public:
                     }
                 }
             }
-            enemies.emplace_back(ex, ey);
+            enemies.emplace_back(ex, ey, enemyTexture, bulletTexture, walls);
         }
     }
 

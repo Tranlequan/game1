@@ -6,7 +6,7 @@ EnemyTank::EnemyTank(int startX, int startY, SDL_Texture* tex, SDL_Texture* bull
     y = startY;
     dirX = 0; // gán vị trí ban đầu cho xe tăng địch
     dirY = 1; // mặc định hướng ban đầu là hướng xuống
-    moveDelay = 15;
+    moveDelay = 20;
     shootDelay = 5;
     rect = {x, y, TILE_SIZE, TILE_SIZE};
     active = true;

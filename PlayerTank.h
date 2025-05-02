@@ -14,8 +14,9 @@ class PlayerTank
     int dirX, dirY;
     SDL_Rect rect;
     SDL_Texture* texture;
+    SDL_Texture* bulletTexture;
     std::vector<Bullet> Bullets;
-    PlayerTank(int startX, int startY, SDL_Texture* tex);
+    PlayerTank(int startX, int startY, SDL_Renderer* renderer, SDL_Texture* tex, SDL_Texture* bulletTex);
     void move(int dx, int dy, const std::vector<Wall>& walls) ;
     void shoot();
     void updateBullets();

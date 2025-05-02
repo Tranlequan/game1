@@ -1,14 +1,16 @@
 #include "PlayerTank.h"
 #include <algorithm>
 
-PlayerTank::PlayerTank(int startX, int startY, SDL_Texture* tex) {
-    x = startX;
-    y = startY;
-    rect = {x, y, TILE_SIZE, TILE_SIZE};
-    dirX = 0;
-    dirY = -1;
-    texture = tex;
-}
+PlayerTank::PlayerTank(int startX, int startY, SDL_Renderer* renderer, SDL_Texture* tex, SDL_Texture* bulletTex) {
+        x = startX;
+        y = startY;
+        rect = {x, y, TILE_SIZE, TILE_SIZE};
+        dirX = 0;
+        dirY = -1;
+        texture = tex;
+        bulletTexture = bulletTex;
+    }
+
 
     void PlayerTank ::move(int dx, int dy, const std::vector<Wall>& walls) {
         int newX = x + dx;
@@ -44,7 +46,7 @@ PlayerTank::PlayerTank(int startX, int startY, SDL_Texture* tex) {
     for (auto& bullet : Bullets) bullet.render(renderer);
 }
 void PlayerTank::shoot() {
-       Bullets.emplace_back(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, dirX, dirY);
+       Bullets.emplace_back(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, dirX, dirY, bulletTexture);
 
     }
 void PlayerTank::updateBullets() {
