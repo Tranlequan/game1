@@ -6,6 +6,7 @@
 #include "const.h"
 #include "PlayerTank.h"
 #include "Bullet.h"
+#include "EnemyTank.h"
 
 using namespace std;
 
@@ -23,9 +24,11 @@ public:
     SDL_Window* window;
     SDL_Renderer* renderer;
     vector<Wall> walls;
+    vector<EnemyTank> enemies;  // Danh sách các enemy
     PlayerTank* player;
     SDL_Texture* wallTexture;
     SDL_Texture* playerTexture;
+    int enemyNumber = 5;
 
     Game() {
         running = true;
@@ -89,20 +92,68 @@ public:
         }
 
         player->render(renderer);
+
+        // Render các enemy
+        for (const auto& enemy : enemies) {
+            enemy.render(renderer);
+        }
+
         SDL_RenderPresent(renderer);
     }
 
+    void spawnRandomEnemy() {
+       enemies.clear();
+        for (int i = 0; i < enemyNumber; ++i) {
+            int ex, ey;
+            bool valid = false;
+            while (!valid) {
+                ex = (rand() % (MAP_WIDTH - 2) + 1) * TILE_SIZE;
+                ey = (rand() % (MAP_HEIGHT - 2) + 1) * TILE_SIZE;
+                SDL_Rect tempRect = {ex, ey, TILE_SIZE, TILE_SIZE};
 
-void update () {
-player -> updateBullets();
-for (auto& bullet : player -> Bullets) {
-for (auto& wall : walls) {
-if
-(wall.active && SDL_HasIntersection (&bullet.rect, &wall. rect)) {
-wall. active = false;
-bullet. active = false;
-break;
-}}}}
+                valid = true;
+                for (const auto& wall : walls) {
+                    if (wall.active && SDL_HasIntersection(&tempRect, &wall.rect)) {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid && SDL_HasIntersection(&tempRect, &player->rect)) valid = false;
+
+                if (valid) {
+                    for (const auto& enemy : enemies) {
+                        if (SDL_HasIntersection(&tempRect, &enemy.rect)) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            enemies.emplace_back(ex, ey);
+        }
+    }
+
+    void update() {
+        player->updateBullets();
+
+        // Kiểm tra va chạm của bullet với tường
+        for (auto& bullet : player->Bullets) {
+            for (auto& wall : walls) {
+                if (wall.active && SDL_HasIntersection(&bullet.rect, &wall.rect)) {
+                    wall.active = false;
+                    bullet.active = false;
+                    break;
+                }
+            }
+        }
+
+        // Sinh enemy mới với xác suất 5% mỗi lần update nếu chưa đủ số lượng
+        if (rand() % 100 < 5 && enemies.size() < enemyNumber) {
+            spawnRandomEnemy();
+        }
+    }
+
     void handleEvents() {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -114,21 +165,21 @@ break;
                     case SDLK_DOWN: player->move(0, 5, walls); break;
                     case SDLK_LEFT: player->move(-5, 0, walls); break;
                     case SDLK_RIGHT: player->move(5, 0, walls); break;
-                    case SDLK_SPACE: player->shoot(); break ;
+                    case SDLK_SPACE: player->shoot(); break;
                 }
             }
         }
     }
-void run(){
-    while (running) {
-        handleEvents();
-        update();
-        render();
-        SDL_Delay(16);
-    }
-}
-};
 
+    void run() {
+        while (running) {
+            handleEvents();
+            update();
+            render();
+            SDL_Delay(16);
+        }
+    }
+};
 
 int main(int argc, char* argv[]) {
     Game game;
