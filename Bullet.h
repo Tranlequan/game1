@@ -1,6 +1,8 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+
+
 #include <SDL.h>
 #include "Wall.h"
 #include "const.h"

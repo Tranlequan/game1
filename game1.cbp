@@ -35,11 +35,13 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Bullet.h" />
+		<Unit filename="EnemyTank.h" />
 		<Unit filename="PlayerTank.h" />
 		<Unit filename="Wall.h" />
 		<Unit filename="const.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Bullet.cpp" />
+		<Unit filename="src/EnemyTank.cpp" />
 		<Unit filename="src/PlayerTank.cpp" />
 		<Unit filename="src/Wall.cpp" />
 		<Extensions>

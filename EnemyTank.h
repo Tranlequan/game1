@@ -13,8 +13,6 @@ class EnemyTank
 {
     public:
     int x, y, dirX, dirY, moveDelay, shootDelay;
-    // moveDelay : delay giữa mỗi lần thay đổi hướng di chuyển
-    // shootDelay : delay giữa mỗi lần bắn đạn
     SDL_Rect rect;
     bool active;
     std::vector<Bullet> Bullets;

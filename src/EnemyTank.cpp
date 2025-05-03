@@ -7,7 +7,7 @@ EnemyTank::EnemyTank(int startX, int startY, SDL_Texture* tex, SDL_Texture* bull
     dirX = 0; // gán vị trí ban đầu cho xe tăng địch
     dirY = 1; // mặc định hướng ban đầu là hướng xuống
     moveDelay = 20;
-    shootDelay = 5;
+    shootDelay = 15 ;
     rect = {x, y, TILE_SIZE, TILE_SIZE};
     active = true;
     texture = tex;
@@ -23,7 +23,7 @@ EnemyTank::EnemyTank(int startX, int startY, SDL_Texture* tex, SDL_Texture* bull
 
  void EnemyTank::move (const std::vector<Wall>& walls) {
     if (--moveDelay > 0) return; // Chỉ khi giảm về 0 thì enemy mới chọn hướng mới và di chuyển
-    moveDelay = 15; //chờ 15 frame tiếp theo mới được đổi hướng tiếp
+    moveDelay = 10; //chờ 15 frame tiếp theo mới được đổi hướng tiếp
 
     int r = rand() % 4;
     if (r == 0) { dirX = 0; dirY = -5; } //up

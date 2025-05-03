@@ -1,29 +1,28 @@
 #include "Bullet.h"
 
 // Constructor của Bullet
-Bullet::Bullet(int startX, int startY, int dirX, int dirY, SDL_Texture* tex) {
+Bullet::Bullet::Bullet(int startX, int startY, int dirX, int dirY, SDL_Texture* tex) {
     x = startX;
     y = startY;
-    dx = dirX;
+    dx = dirX ;
     dy = dirY;
     active = true;
     rect = {x, y, 10, 10};
     texture = tex;
 }
 
-// Hàm di chuyển của Bullet
-void Bullet::move() {
-    x += dx; // cập nhật tọa độ
-    y += dy;
-    rect.x = x; // đồng bộ lại hình vẽ
-    rect.y = y;
 
-    // nếu đạn ra khỏi màn hình => tắt
-    if (x < TILE_SIZE || x > SCREEN_WIDTH - TILE_SIZE ||
-        y < TILE_SIZE || y > SCREEN_HEIGHT - TILE_SIZE) {
-        active = false;
+void Bullet::move() {
+        x += dx ; // cập nhật tọa độ
+        y += dy;
+        rect.x = x; // đồng bộ lại hình vẽ
+        rect.y = y;
+        // nếu đạn ra khỏi màn hình => tắt
+        if (x < TILE_SIZE || x > SCREEN_WIDTH - TILE_SIZE ||
+            y < TILE_SIZE || y > SCREEN_HEIGHT - TILE_SIZE) {
+            active = false;
+        }
     }
-}
 
 // Hàm render Bullet lên màn hình
 void Bullet::render(SDL_Renderer* renderer) {
