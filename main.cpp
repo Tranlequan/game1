@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <vector>
 #include "Wall.h"
 #include "const.h"
@@ -36,6 +37,7 @@ public:
 
     int enemyNumber = 10;
     vector<EnemyTank> enemies;
+    Mix_Music* bgMusic;
 
     Game()
     {
@@ -58,6 +60,21 @@ public:
             cerr << "Renderer could not be created! SDL Error: " << SDL_GetError() << endl;
             running = false;
         }
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << endl;
+    running = false;
+    return;
+}
+
+Mix_Music* bgMusic = Mix_LoadMUS("background.mp3");
+if (!bgMusic) {
+    cerr << "Failed to load background music! SDL_mixer Error: " << Mix_GetError() << endl;
+    running = false;
+    return;
+}
+
+Mix_PlayMusic(bgMusic, -1); // -1 = lặp vô hạn
+
 
         backgroundTexture = loadTexture("background1.png", renderer);
         wallTexture = loadTexture("wall.png", renderer);
@@ -89,6 +106,9 @@ public:
 
     ~Game() {
         delete player;
+        Mix_HaltMusic();
+        Mix_FreeMusic(bgMusic);
+        Mix_CloseAudio();
         SDL_DestroyTexture(backgroundTexture);
         SDL_DestroyTexture(wallTexture);
         SDL_DestroyTexture(bulletTexture);

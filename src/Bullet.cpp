@@ -36,3 +36,4 @@ void Bullet::render(SDL_Renderer* renderer) {
         SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
     }
 }
+
