@@ -2,12 +2,14 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <vector>
 #include "Wall.h"
 #include "const.h"
 #include "PlayerTank.h"
 #include "Bullet.h"
 #include "EnemyTank.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -236,8 +238,12 @@ Mix_PlayMusic(bgMusic, -1); // -1 = lặp vô hạn
 
 int main(int argc, char* argv[]) {
     Game game;
-    if (game.running) {
-        game.run();
+    if (!game.running) return 1;
+    Menu menu(game.renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+    if (!menu.show()) {
+        return 0;
     }
+
+    game.run();
     return 0;
 }

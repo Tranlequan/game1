@@ -1,14 +1,17 @@
 # depslib dependency file v1.0
-1746294421 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\main.cpp
+1746360056 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
 	<vector>
 	"Wall.h"
 	"const.h"
 	"PlayerTank.h"
 	"Bullet.h"
 	"EnemyTank.h"
+	"menu.h"
 
 1746123670 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\wall.cpp
 	"wall.h"
@@ -51,4 +54,17 @@
 	"wall.h"
 	"Bullet.h"
 	"playertank.h"
+
+1746361903 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\menu.cpp
+	"menu.h"
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<iostream>
+
+1746361940 c:\users\tranl\onedrive\desktop\gameofquan\game1\src\menu.h
+	<SDL.h>
+	<SDL_ttf.h>
+	<string>
+	<iostream>
 
