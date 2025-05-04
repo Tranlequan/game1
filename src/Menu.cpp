@@ -1,79 +1,78 @@
 #include "menu.h"
-#include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_ttf.h>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 Menu::Menu(SDL_Renderer* renderer, int screenWidth, int screenHeight)
     : renderer(renderer), screenWidth(screenWidth), screenHeight(screenHeight),
       backgroundTexture(nullptr), titleFont(nullptr), buttonFont(nullptr),
-      titleTexture(nullptr), playButtonTexture(nullptr) {}
+      titleTexture(nullptr), playButtonTexture(nullptr),
+      bestScoreLabelTexture(nullptr), bestScoreValueTexture(nullptr) {}
 
 Menu::~Menu() {
     SDL_DestroyTexture(backgroundTexture);
     SDL_DestroyTexture(titleTexture);
     SDL_DestroyTexture(playButtonTexture);
+    SDL_DestroyTexture(bestScoreLabelTexture);
+    SDL_DestroyTexture(bestScoreValueTexture);
     TTF_CloseFont(titleFont);
     TTF_CloseFont(buttonFont);
 }
 
-bool Menu::loadMedia() {
-    backgroundTexture = loadTexture("menu1.png");
-    if (!backgroundTexture) return false;
+void Menu::setBestScore(int score) {
+    bestScore = score;
+}
 
+bool Menu::loadMedia() {
     if (TTF_Init() < 0) {
-        std::cerr << "Failed to initialize SDL_ttf: " << TTF_GetError() << std::endl;
+        std::cerr << "TTF_Init Error: " << TTF_GetError() << std::endl;
         return false;
     }
 
     titleFont = TTF_OpenFont("stencilla.ttf", 90);
-    buttonFont = TTF_OpenFont("arial.ttf", 50);
+    buttonFont = TTF_OpenFont("impact.ttf", 50);
     if (!titleFont || !buttonFont) {
-        std::cerr << "Failed to load fonts.\n";
+        std::cerr << "Font load error\n";
         return false;
     }
 
-    SDL_Color white = {255, 255, 255};
-    SDL_Color green = {0, 255, 0};
+    // Màu chữ phù hợp tone tối
+    SDL_Color titleColor = { 224, 224, 224 };     // xám nhạt
+    SDL_Color buttonTextColor = { 255, 255, 255 }; // trắng sáng
+    SDL_Color bestScoreColor = { 221, 221, 221 };  // xám trắng
 
-    titleTexture = loadTextTexture("BATTLE TANK", white, titleFont);
-    playButtonTexture = loadTextTexture("PLAY GAME", green, buttonFont);
+    // Tạo texture chữ
+    titleTexture = loadTextTexture("BATTLE CITY", titleColor, titleFont);
+    playButtonTexture = loadTextTexture("PLAY GAME", buttonTextColor, buttonFont);
+    bestScoreLabelTexture = loadTextTexture("HIGH SCORE", bestScoreColor, buttonFont);
 
-    if (!titleTexture || !playButtonTexture) return false;
+    std::stringstream ss;
+    ss << std::setfill('0') << std::setw(6) << bestScore;
+    bestScoreValueTexture = loadTextTexture(ss.str(), bestScoreColor, buttonFont);
 
-    int titleW, titleH;
-    SDL_QueryTexture(titleTexture, nullptr, nullptr, &titleW, &titleH);
-    titleRect = { (screenWidth - titleW) / 2, 100, titleW, titleH };
+    // Layout
+    int w, h;
 
-    int buttonW, buttonH;
-    SDL_QueryTexture(playButtonTexture, nullptr, nullptr, &buttonW, &buttonH);
-    playButtonRect = { (screenWidth - buttonW) / 2, 350, buttonW, buttonH };
+    SDL_QueryTexture(titleTexture, nullptr, nullptr, &w, &h);
+    titleRect = { (screenWidth - w) / 2, 60, w, h };
 
-    // Tạo khung nền to hơn chữ một chút
-    playButtonOutlineRect = {
-        playButtonRect.x - 10,
-        playButtonRect.y - 5,
-        playButtonRect.w + 20,
-        playButtonRect.h + 10
-    };
+    SDL_QueryTexture(playButtonTexture, nullptr, nullptr, &w, &h);
+    playButtonRect = { (screenWidth - w) / 2, 230, w, h };
+    playButtonOutlineRect = { playButtonRect.x - 20, playButtonRect.y - 10, w + 40, h + 20 };
+
+    SDL_QueryTexture(bestScoreLabelTexture, nullptr, nullptr, &w, &h);
+    bestScoreLabelRect = { (screenWidth - w) / 2, 350, w, h };
+
+    SDL_QueryTexture(bestScoreValueTexture, nullptr, nullptr, &w, &h);
+    bestScoreValueRect = { (screenWidth - w) / 2, bestScoreLabelRect.y + bestScoreLabelRect.h + 10, w, h };
 
     return true;
 }
 
 SDL_Texture* Menu::loadTextTexture(const std::string& text, SDL_Color color, TTF_Font* font) {
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
     if (!surface) return nullptr;
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    return texture;
-}
-
-SDL_Texture* Menu::loadTexture(const std::string& path) {
-    SDL_Surface* surface = IMG_Load(path.c_str());
-    if (!surface) {
-        std::cerr << "Failed to load image: " << path << "\n";
-        return nullptr;
-    }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
     return texture;
@@ -93,24 +92,26 @@ void Menu::handleEvent(SDL_Event& e, bool& quit, bool& playGame) {
 }
 
 void Menu::render() {
-    SDL_RenderCopy(renderer, backgroundTexture, nullptr, nullptr);
+    // Nền xám đậm city tone
+    SDL_SetRenderDrawColor(renderer, 26, 26, 26, 255); // #1A1A1A
+    SDL_RenderClear(renderer);
+
+    // Tiêu đề
     SDL_RenderCopy(renderer, titleTexture, nullptr, &titleRect);
 
-    // Vẽ nền vàng nhạt cho nút PLAY GAME
-    SDL_SetRenderDrawColor(renderer, 255, 255, 102, 255); // Vàng nhạt
+    // Nút PLAY
+    SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255); // nền nâu đậm
     SDL_RenderFillRect(renderer, &playButtonOutlineRect);
 
-    // Vẽ viền đen quanh nút
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Đen
+    SDL_SetRenderDrawColor(renderer, 205, 133, 63, 255); // viền nâu nhạt
     SDL_RenderDrawRect(renderer, &playButtonOutlineRect);
 
-    // Vẽ chữ PLAY GAME màu vàng
     SDL_RenderCopy(renderer, playButtonTexture, nullptr, &playButtonRect);
 
-    // Reset lại màu render nếu cần tiếp tục vẽ thành phần khác
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    // HIGH SCORE
+    SDL_RenderCopy(renderer, bestScoreLabelTexture, nullptr, &bestScoreLabelRect);
+    SDL_RenderCopy(renderer, bestScoreValueTexture, nullptr, &bestScoreValueRect);
 }
-
 
 bool Menu::show() {
     bool quit = false;
@@ -120,13 +121,13 @@ bool Menu::show() {
     if (!loadMedia()) return false;
 
     while (!quit && !playGame) {
-        while (SDL_PollEvent(&e) != 0) {
+        while (SDL_PollEvent(&e)) {
             handleEvent(e, quit, playGame);
         }
 
-        SDL_RenderClear(renderer);
         render();
         SDL_RenderPresent(renderer);
+        SDL_Delay(16);
     }
 
     return playGame;

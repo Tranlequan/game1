@@ -55,16 +55,15 @@
 	"Bullet.h"
 	"playertank.h"
 
-1746361903 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\menu.cpp
+1746364680 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\menu.cpp
 	"menu.h"
-	<SDL.h>
 	<SDL_image.h>
-	<SDL_ttf.h>
 	<iostream>
+	<sstream>
 
-1746361940 c:\users\tranl\onedrive\desktop\gameofquan\game1\src\menu.h
+1746364619 c:\users\tranl\onedrive\desktop\gameofquan\game1\src\menu.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<string>
-	<iostream>
+	<iomanip>
 
