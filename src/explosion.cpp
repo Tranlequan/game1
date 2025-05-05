@@ -1,14 +1,18 @@
 #include "Explosion.h"
+#include <SDL.h>
 
 Explosion::Explosion(SDL_Rect pos) {
     rect = pos;
     frame = 0;
     active = true;
+    startTime = SDL_GetTicks();  // Lưu thời gian bắt đầu
 }
 
 void Explosion::update() {
-    frame++;
-    if (frame >= 3) {  // Số lượng frame ảnh nổ, nếu bạn có nhiều hơn thì sửa lại
+    Uint32 currentTime = SDL_GetTicks();
+    frame = (currentTime - startTime) / frameDelay;
+
+    if (frame >= 3) {  // Nếu bạn có nhiều frame hơn, hãy thay số 3 bằng frames.size()
         active = false;
     }
 }
