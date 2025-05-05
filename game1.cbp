@@ -41,6 +41,7 @@
 		<Unit filename="PlayerTank.h" />
 		<Unit filename="Wall.h" />
 		<Unit filename="const.h" />
+		<Unit filename="explosion.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Bullet.cpp" />
 		<Unit filename="src/EnemyTank.cpp" />
@@ -48,6 +49,7 @@
 		<Unit filename="src/Menu.h" />
 		<Unit filename="src/PlayerTank.cpp" />
 		<Unit filename="src/Wall.cpp" />
+		<Unit filename="src/explosion.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

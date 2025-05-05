@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1746378162 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\main.cpp
+1746426727 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -68,4 +68,11 @@
 	<SDL.h>
 	<SDL_ttf.h>
 	<string>
+
+1746406086 source:c:\users\tranl\onedrive\desktop\gameofquan\game1\src\explosion.cpp
+	"Explosion.h"
+
+1746406087 c:\users\tranl\onedrive\desktop\gameofquan\game1\explosion.h
+	<SDL.h>
+	<vector>
 
